@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Set Reminder for Emails</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-top: 50px;
+      }
+
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      input[type="text"], input[type="datetime-local"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Set Reminder for Emails</h1>
+    <form id="reminder-form">
+      <label for="message">Message:</label>
+      <input type="text" id="message" name="message" placeholder="Enter a message">
+      <label for="email-input">Email IDs (separated by commas):</label>
+      <input type="text" id="email-input" name="email-input" placeholder="example@example.com" required>
+      <label for="time">Set Reminder Time:</label>
+      <input type="datetime-local" id="time" name="time">
+      <input type="submit" value="Set Reminder">
+    </form>
+
+    <script>
+      const form = document.getElementById('reminder-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const message = document.getElementById('message').value;
+        
+
+        const emailInput = document.getElementById('email-input');
+        const emailIds = emailInput.value.split(',');
+
+
+        const time = document.getElementById('time').value;
+
+        // if (!validateEmails(emailIds)) {
+        //   alert('Please enter valid email addresses separated by commas.');
+        //   return;
+        // }
+
+        
+
+        const response = await fetch('/reminder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message, time, emailIds })
+        });
+        if (response.ok) {
+          alert('Reminder set');
+          form.reset();
+        } else {
+          alert('Error setting reminder');
+        }
+      });
+    </script>
+  </body>
+</html>
